@@ -1,0 +1,19 @@
+version: '2'
+services:
+  xa-lichen:
+    image: karfai42/xa-lichen:latest
+    environment:
+      - RACK_ENV=production
+      - RAILS_ENV=production
+  xa-registry:
+    image: karfai42/xa-registry:latest
+    environment:
+      - RACK_ENV=production
+      - RAILS_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017
+  xa-repository:
+    image: karfai42/xa-repository-reference:latest
+    environment:
+      - RACK_ENV=production
+      - RAILS_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017

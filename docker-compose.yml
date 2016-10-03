@@ -1,0 +1,38 @@
+version: '2'
+services:
+  pg:
+    image: postgres:9.5
+    environment:
+      - POSTGRES_PASSWORD
+    ports:
+      - "8888"
+    restart: always
+    
+  mongo:
+    image: mongo:3.3
+    restart: always
+
+  xa-lichen:
+    command: bundle exec puma
+    links:
+      - pg
+    environment:
+      - POSTGRES_HOST=pg
+      - POSTGRES_PASSWORD
+    ports:
+      - "7001:3000"
+
+  xa-registry:
+    command: bundle exec puma
+    links:
+      - mongo
+    ports:
+      - "7002:3000"
+
+  xa-repository:
+    command: bundle exec puma
+    links:
+      - mongo
+    ports:
+      - "7003:3000"
+      
