@@ -8,6 +8,16 @@ services:
       - "8888"
     restart: always
     
+  nginx:
+    image: karfai42/frontend:latest
+    ports:
+      - "80:80"
+    links:
+      - xa-lichen
+      - xa-registry
+      - xa-repository
+    restart: always
+
   mongo:
     image: mongo:3.3
     restart: always
@@ -19,20 +29,14 @@ services:
     environment:
       - POSTGRES_HOST=pg
       - POSTGRES_PASSWORD
-    ports:
-      - "7001:3000"
 
   xa-registry:
     command: bundle exec puma
     links:
       - mongo
-    ports:
-      - "7002:3000"
 
   xa-repository:
     command: bundle exec puma
     links:
       - mongo
-    ports:
-      - "7003:3000"
       
