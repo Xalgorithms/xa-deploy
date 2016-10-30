@@ -1,5 +1,11 @@
 version: '2'
 services:
+  redis:
+    image: redis:3-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    
   pg:
     image: postgres:9.5
     environment:
@@ -24,12 +30,30 @@ services:
 
   xa-lichen:
     command: bundle exec puma
+    depends_on:
+      - pg
+      - redis
     links:
       - pg
+      - redis
     environment:
       - POSTGRES_HOST=pg
       - POSTGRES_PASSWORD
+      - REDIS_URL=redis://redis:6379
 
+  xa-lichen-worker:
+    command: bundle exec sidekiq
+    depends_on:
+      - pg
+      - redis
+    links:
+      - pg
+      - redis
+    environment:
+      - POSTGRES_HOST=pg
+      - POSTGRES_PASSWORD
+      - REDIS_URL=redis://redis:6379
+      
   xa-registry:
     command: bundle exec puma
     links:

@@ -5,6 +5,11 @@ services:
     environment:
       - RACK_ENV=production
       - RAILS_ENV=production
+  xa-lichen-worker:
+    image: karfai42/xa-lichen:latest
+    environment:
+      - RACK_ENV=production
+      - RAILS_ENV=production
   xa-registry:
     image: karfai42/xa-registry:latest
     environment:
